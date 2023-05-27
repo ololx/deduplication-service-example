@@ -1,16 +1,30 @@
-# Compiled class file
+# exclude from ignore
+!.gitignore
+!.github
+!.mvn/wrapper/maven-wrapper.jar
+
+# all hidden files
+.*
+
+# rocks db
+rocksdb/
+
+# general swap/backup files
+*.so
+*.log
+*.out
+*~
+*.swp
+*.DS_Store
+*.lock
+
+# virtual machine crash logs
+hs_err_pid*
+
+# compiled java class files
 *.class
 
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# package files
 *.jar
 *.war
 *.nar
@@ -19,6 +33,43 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# compiled ant specific
+dist/
+build/
+out/
+
+# compiled maven specific
+**/log/
+**/target/
+
+# intelliJ IDEA specific
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# eclipse specific
+.classpath
+.project
+.settings/
+
+# netbeans specific
+core/
+nbproject/
+
+# STS specific
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# VS Code specific
+.vscode/
+/.mvn/wrapper/maven-wrapper.jar
+/.mvn/wrapper/maven-wrapper.properties
+/.mvn/wrapper/MavenWrapperDownloader.java
+/mvnw
+/mvnw.cmd
