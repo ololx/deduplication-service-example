@@ -23,7 +23,7 @@ public class DeduplicationServiceApp {
             final var deduplication = injector.getInstance(Deduplication.class);
             log.info(":::Deduplication service was started:::");
 
-            deduplication.accept("Hello world");
+            deduplication.apply("Hello world").join();
         }  catch (Exception e) {
             log.error("Initialization exception", e);
             System.exit(1);

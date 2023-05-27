@@ -18,8 +18,8 @@ public class CRC32Checksum extends AbstractChecksum {
 
     private static final LongEncoder longEncoder = new LongEncoder();
 
-    public CRC32Checksum(UUID id, LocalDate date, LocalDateTime time) {
-        super(id, date, time);
+    public CRC32Checksum(byte[] data) {
+        super(data);
     }
 
     @Override

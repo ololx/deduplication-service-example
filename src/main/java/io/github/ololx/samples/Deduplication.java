@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * project deduplication-service-example
@@ -19,7 +21,7 @@ import java.util.function.Consumer;
  *
  * @author Alexander A. Kropotin
  */
-public class Deduplication implements Consumer<String> {
+public class Deduplication implements Function<String, CompletableFuture<Void>> {
 
     private final static Logger log = LoggerFactory.getLogger(Deduplication.class);
 
@@ -31,18 +33,14 @@ public class Deduplication implements Consumer<String> {
     }
 
     @Override
-    public void accept(String message) {
+    public CompletableFuture<Void> apply(String message) {
         log.info("Receive message: {}", message);
-        var checksum = new CRC32Checksum(UUID.randomUUID(), LocalDate.now(), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+        var checksum = new CRC32Checksum(message.getBytes());
 
-        this.checksumRegistry.get(checksum)
-                .thenApplyAsync(result -> {
-                    log.info("Is duplicate? {}", result != null);
-                    return result != null;
-                })
+        return this.checksumRegistry.get(new CRC32Checksum(message.getBytes()))
                 .thenAcceptAsync(result -> {
+                    log.info("Is duplicate? {}", result != null);
                     this.checksumRegistry.put(checksum, message.getBytes());
-                })
-                .join();
+                });
     }
 }
