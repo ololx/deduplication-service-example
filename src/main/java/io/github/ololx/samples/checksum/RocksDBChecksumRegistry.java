@@ -1,8 +1,6 @@
 package io.github.ololx.samples.checksum;
 
-import org.rocksdb.Options;
-import org.rocksdb.RocksDB;
-import org.rocksdb.RocksDBException;
+import org.rocksdb.*;
 
 import java.io.File;
 import java.time.Duration;
@@ -20,7 +18,11 @@ public class RocksDBChecksumRegistry implements ChecksumRegistry, AutoCloseable 
 
     public RocksDBChecksumRegistry() throws RocksDBException {
         RocksDB.loadLibrary();
-        Options options = new Options().setCreateIfMissing(true)
+        Options options = new Options()
+                .setCreateIfMissing(true)
+                .setCreateMissingColumnFamilies(true)
+                .setCompactionStyle(CompactionStyle.UNIVERSAL)
+                .setCompressionType(CompressionType.SNAPPY_COMPRESSION)
                 .setTtl(Duration.ofDays(30).toSeconds());
         rocksDB = RocksDB.open(options, new File("./rocksdb").getPath());
     }
