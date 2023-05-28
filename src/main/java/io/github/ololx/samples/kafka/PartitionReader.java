@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.*;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -23,8 +22,6 @@ public final class PartitionReader implements KafkaReader, AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(PartitionReader.class);
 
-    private final ScheduledExecutorService executorService;
-
     private final TopicPartition topicPartition;
 
     private final Properties properties;
@@ -32,6 +29,8 @@ public final class PartitionReader implements KafkaReader, AutoCloseable {
     private final Function<ConsumerRecord<String, String>, CompletableFuture<?>> recordProcessor;
 
     private KafkaConsumer<String, String> kafkaConsumer;
+
+    private ScheduledExecutorService executorService;
 
     private ScheduledFuture<?> pollFuture;
 
@@ -113,6 +112,26 @@ public final class PartitionReader implements KafkaReader, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-
+        CompletableFuture.runAsync(
+                () -> {
+                    if (this.pollFuture != null && !this.pollFuture.isDone()) {
+                        pollFuture.cancel(true);
+                    }
+                    if (this.kafkaConsumer != null) {
+                        kafkaConsumer.close();
+                    }
+                    },
+                        executorService
+                )
+                .thenRun(
+                        () -> {
+                            executorService.shutdownNow();
+                            try {
+                                this.executorService.awaitTermination(10, TimeUnit.SECONDS);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            executorService = null;}
+                );
     }
 }

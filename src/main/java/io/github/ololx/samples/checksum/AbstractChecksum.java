@@ -1,10 +1,6 @@
 package io.github.ololx.samples.checksum;
 
-import java.nio.ByteBuffer;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * project deduplication-service-example

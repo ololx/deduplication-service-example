@@ -3,9 +3,6 @@ package io.github.ololx.samples.checksum;
 import io.github.ololx.moonshine.bytes.Endianness;
 import io.github.ololx.moonshine.bytes.coding.encoders.LongEncoder;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import java.util.zip.CRC32;
 
 /**
