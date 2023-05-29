@@ -1,5 +1,6 @@
 package io.github.ololx.samples.checksum;
 
+import io.github.ololx.samples.utils.SneakyTryCatch;
 import org.rocksdb.*;
 
 import java.io.File;
@@ -29,33 +30,22 @@ public class RocksDBChecksumRegistry implements ChecksumRegistry, AutoCloseable 
 
     @Override
     public CompletableFuture<byte[]> get(Checksum checksum) {
-        try {
-            byte[] value = rocksDB.get(checksum.getBytes());
-            return CompletableFuture.completedFuture(value);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            return SneakyTryCatch.sneakyTry(() -> rocksDB.get(checksum.getBytes()));
+        });
     }
 
     @Override
     public CompletableFuture<Void> put(Checksum checksum, byte[] value) {
         return CompletableFuture.runAsync(() -> {
-            try {
-                rocksDB.put(checksum.getBytes(), value);
-            } catch (RocksDBException e) {
-                e.printStackTrace();
-            }
+            SneakyTryCatch.sneakyTry(() -> rocksDB.put(checksum.getBytes(), value));
         });
     }
 
     @Override
     public CompletableFuture<Void> delete(Checksum checksum) {
         return CompletableFuture.runAsync(() -> {
-            try {
-                rocksDB.delete(checksum.getBytes());
-            } catch (RocksDBException e) {
-                e.printStackTrace();
-            }
+            SneakyTryCatch.sneakyTry(() -> rocksDB.delete(checksum.getBytes()));
         });
     }
 
