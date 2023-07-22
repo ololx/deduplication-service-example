@@ -37,7 +37,13 @@
         <dependency>
             <groupId>io.github.ololx.moonshine</groupId>
             <artifactId>moonshine-measuring</artifactId>
-            <version>0.7.0</version>
+            <version>0.8.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.github.ololx.moonshine/moonshine-stopwatch -->
+        <dependency>
+            <groupId>io.github.ololx.moonshine</groupId>
+            <artifactId>moonshine-stopwatch</artifactId>
+            <version>0.8.2</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
@@ -57,6 +63,15 @@
             <artifactId>kafka-clients</artifactId>
             <version>3.4.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
